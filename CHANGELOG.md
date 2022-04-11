@@ -1,1 +1,3 @@
-## [0.0.1](https://github.com/webigorkiev/vuetouch) (2022-04-11)
+## [1.0.1](https://github.com/webigorkiev/vuetouch) (2022-04-11)
+
+Create directive
