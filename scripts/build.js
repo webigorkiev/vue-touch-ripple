@@ -80,7 +80,7 @@ const build = async(input, output, format = "esm") => {
  */
 const buildTypes = async(root) => {
     const bundle = await rollup.rollup({
-        input: ["./src/index.ts", "./src/utils.ts", "./src/handlers.ts", "./src/debounce.ts", "./src/types.ts"],
+        input: ["./src/index.ts"],
         external,
         plugins: [
             aliasPlugin({
