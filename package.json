@@ -1,0 +1,70 @@
+{
+  "name": "@vuemod/vue-touch-ripple",
+  "private": true,
+  "description": "Ripple directive for vue 3",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "scripts": {
+    "build": "yarn docs:build && node scripts/build.js",
+    "dev": "vite",
+    "lint": "eslint --ext .ts --ignore-path .gitignore ./src/**/*",
+    "test": "jest tests/index.spec.ts -c jest.config.ts --silent false --passWithNoTests",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "deploy": "node deploy.mjs"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.2",
+    "@rollup/plugin-replace": "^2.4.2",
+    "@types/expect-puppeteer": "^4.4.7",
+    "@types/jest": "^26.0.23",
+    "@types/jest-environment-puppeteer": "^4.4.1",
+    "@types/node": "^16.11.4",
+    "@types/puppeteer": "^5.4.4",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/compiler-sfc": "^3.2.31",
+    "chalk": "^4.1.1",
+    "cross-fetch": "^3.1.5",
+    "esbuild": "^0.12.12",
+    "eslint": "^7.29.0",
+    "fs-extra": "^10.0.0",
+    "jest": "27",
+    "jest-puppeteer": "^6.1.0",
+    "margv": "^1.1.2",
+    "prompts": "^2.4.2",
+    "puppeteer": "^13.5.2",
+    "rollup": "^2.63.0",
+    "rollup-plugin-dts": "^3.0.2",
+    "rollup-plugin-esbuild": "^4.5.0",
+    "ts-jest": "27.0.3",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.1",
+    "vitepress": "^0.22.3",
+    "vue": "^3.2.31",
+    "vue-jest": "^5.0.0-alpha.10",
+    "vue-tsc": "^0.2.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue3",
+    "ripple",
+    "vue-ripple",
+    "vue-swipe-ripple",
+    "animations"
+  ],
+  "author": "webigorkiev",
+  "bugs": {
+    "url": "https://github.com/webigorkiev/vue-touch-ripple/issues"
+  },
+  "homepage": "https://github.com/webigorkiev/vue-touch-ripple#readme",
+  "web-types": "./web-types.json",
+  "vetur": {
+    "tags": "./tags.json"
+  }
+}
