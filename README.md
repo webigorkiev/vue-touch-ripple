@@ -4,7 +4,7 @@ Ripple directive for vue 3
 
 ### Documentation and Demo
 
-[vuetouch docs](https://webigorkiev.github.io/vue-touch-ripple-docs/)
+[vue-touch-ripple docs](https://webigorkiev.github.io/vue-touch-ripple-docs/)
 
 ## Installation
 
