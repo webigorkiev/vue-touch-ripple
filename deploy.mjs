@@ -79,6 +79,6 @@ await spawnLog("git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepr
 console.log(green, "4. Публикация в npm", black);
 await spawnLog("yarn publish ./dist --access=public --new-version=" + pkg.version, [], {stdio: "ignore"});
 console.log(green, "5. Процесс успешно завершен", black);
-console.log("GitHub", "https://github.com/webigorkiev/vuetouch/");
-console.log("GitHub Pages", "https://webigorkiev.github.io/vuetouch-docs/");
-console.log("npm", "https://www.npmjs.com/package/@vuemod/vue-touch");
+console.log("GitHub", "https://github.com/webigorkiev/vue-touch-ripple/");
+console.log("GitHub Pages", "https://webigorkiev.github.io/vue-touch-ripple-docs/");
+console.log("npm", "https://www.npmjs.com/package/@vuemod/vue-touch-ripple");
