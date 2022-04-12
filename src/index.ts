@@ -41,7 +41,14 @@ export const defineTouchRipple = (options?:RippleOptions) => {
                 100% {opacity: 1;transform: scale(0);}}
             }
             .v-touch-ripple {
-                overflow: hidden;position: relative;user-select: none;-webkit-tap-highlight-color: transparent;
+                overflow: hidden;
+                position: relative;
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                -webkit-tap-highlight-color: transparent;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
             }
             .v-touch-ripple-paint {display: block;position: absolute;background: rgba(255, 255, 255, 0.5);
             border-radius: 100%;transform: scale(0);pointer-events: none;}

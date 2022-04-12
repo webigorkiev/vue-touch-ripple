@@ -1,3 +1,7 @@
+## [1.0.5](https://github.com/webigorkiev/vuetouch/tree/v1.0.5) (2022-04-12)
+
+* Remove the highlight on button press
+
 ## [1.0.4](https://github.com/webigorkiev/vuetouch/tree/v1.0.4) (2022-04-11)
 
 * Fix scroll issue

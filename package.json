@@ -2,7 +2,7 @@
   "name": "@vuemod/vue-touch-ripple",
   "private": true,
   "description": "Ripple directive for vue 3",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./index.js",
   "module": "./index.mjs",
   "scripts": {
