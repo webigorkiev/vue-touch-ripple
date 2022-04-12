@@ -11,10 +11,15 @@ interface HTMLElementTouch extends HTMLElement {
         shift: number[]
     }
 }
+const defaultListenerOptions: AddEventListenerOptions = {
+    once: false,
+    passive: false,
+    capture: false
+};
 export const defineTouchRipple = (options?:RippleOptions) => {
     const opts: Required<RippleOptions> = Object.assign({
         styleId: "vue-touch-ripple-styles",
-        duration: "0.4"
+        duration: "400"
     }, options || {});
     const isTouchScreenDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints;
     const getCoords = (event: Event) => event.type.indexOf('mouse') !== -1
@@ -28,54 +33,12 @@ export const defineTouchRipple = (options?:RippleOptions) => {
     const isSheet = () => {
         return !!document.getElementById(opts.styleId);
     };
-    const createSheet = () => {
-        if(isSheet()) {
-            return;
-        }
-        const sheet = document.createElement("style");
-        sheet.id = opts.styleId;
-        sheet.innerHTML = `
-            @keyframes touch-ripple-extension {100% {opacity: 0;transform: scale(2.5);}}
-            @keyframes touch-ripple-swipe {
-                50% {opacity: 0;transform: scale(2.5); 
-                100% {opacity: 1;transform: scale(0);}}
-            }
-            .v-touch-ripple {
-                overflow: hidden;
-                position: relative;
-                user-select: none;
-                -moz-user-select: none;
-                -webkit-user-select: none;
-                -ms-user-select: none;
-                -webkit-tap-highlight-color: transparent;
-                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-            }
-            .v-touch-ripple-paint {display: block;position: absolute;background: rgba(255, 255, 255, 0.5);
-            border-radius: 100%;transform: scale(0);pointer-events: none;}
-            .v-touch-ripple-paint-extension {animation: touch-ripple-extension ${opts.duration}s linear;}
-            .v-touch-ripple-paint-swipe {animation: touch-ripple-swipe ${opts.duration*1.5}s linear;}
-        `;
-        document.head.prepend(sheet);
-    };
     const removeSheet = () => {
         const sheet = document.getElementById(opts.styleId);
         sheet && document.head.removeChild(sheet);
     };
-    const mounted = (el: HTMLElementTouch) => {
-        el.classList.add("v-touch-ripple");
-        const paint = document.createElement("span");
-        paint.classList.add("v-touch-ripple-paint");
-        el.appendChild(paint);
-        paint.addEventListener('animationend', onAnimationEnd);
-    };
     const getPaint = (el: HTMLElementTouch) => {
         return el.getElementsByClassName("v-touch-ripple-paint").item(0) as HTMLElementTouch || null;
-    };
-    const unmounted = (el: HTMLElementTouch) => {
-        el.classList.remove("v-touch-ripple");
-        const paint = getPaint(el);
-        paint && paint.removeEventListener('animationend', onAnimationEnd);
-        paint && paint.remove();
     };
     const onMouseDown = (event: Event) => {
         const el = event.currentTarget as HTMLElementTouch;
@@ -114,25 +77,77 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         paint.style.left = `${coords[0] - shift[0] - diameter/2}px`;
         paint.style.top = `${coords[1] - shift[1] - diameter/2}px`;
     };
+    const createSheet = (duration: number) => {
+        if(isSheet()) {
+            return;
+        }
+        const sheet = document.createElement("style");
+        sheet.id = opts.styleId;
+        sheet.innerHTML = `
+            @keyframes touch-ripple-extension {100% {opacity: 0;transform: scale(2.5);}}
+            @keyframes touch-ripple-swipe {
+                50% {opacity: 0;transform: scale(2.5); 
+                100% {opacity: 1;transform: scale(0);}}
+            }
+            .v-touch-ripple {
+                overflow: hidden;
+                position: relative;
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                -webkit-tap-highlight-color: transparent;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+            .v-touch-ripple-paint {display: block;position: absolute;background: rgba(255, 255, 255, 0.5);
+            border-radius: 100%;transform: scale(0);pointer-events: none;}
+            .v-touch-ripple-paint-extension {animation: touch-ripple-extension ${duration}ms linear;}
+            .v-touch-ripple-paint-swipe {animation: touch-ripple-swipe ${duration}ms linear;}
+        `;
+        document.head.prepend(sheet);
+    };
+    const mounted = (el: HTMLElementTouch, duration: number) => {
+        el.classList.add("v-touch-ripple");
+        const paint = document.createElement("span");
+        paint.classList.add("v-touch-ripple-paint");
+        duration && (paint.style.animationDuration = `${duration}ms`);
+        el.appendChild(paint);
+        paint.addEventListener('animationend', onAnimationEnd);
+    };
+    const unmounted = (el: HTMLElementTouch) => {
+        el.classList.remove("v-touch-ripple");
+        const paint = getPaint(el);
+        paint && paint.removeEventListener('animationend', onAnimationEnd);
+        paint && paint.remove();
+    };
 
     return {
         mounted(el: HTMLElementTouch, binding) {
             const isFirstDirective = !("_vueTouchRipple" in el);
-            createSheet();
-            mounted(el);
+            const listenerOpts: AddEventListenerOptions = Object.assign({}, defaultListenerOptions);
+            const modifiers = binding.modifiers;
+            const duration = opts.duration;
+            const modifierDuration = Object.keys(modifiers).find((key) => /^\d+$/.test(key));
+            createSheet(duration);
+            mounted(el, modifierDuration ? parseInt(modifierDuration) : duration);
             if(isFirstDirective) {
-                const modifiers = binding.modifiers;
+                listenerOpts.capture = modifiers.capture || false;
+                listenerOpts.once = modifiers.once || false;
+                listenerOpts.passive = modifiers.passive || false;
+                const arg = binding.arg;
                 el._vueTouchRipple = {
-                    effect: modifiers.swipe ? "v-touch-ripple-paint-swipe" : "v-touch-ripple-paint-extension",
+                    effect: modifiers.swipe || arg === "swipe"
+                        ? "v-touch-ripple-paint-swipe"
+                        : "v-touch-ripple-paint-extension",
                     diameter: 0,
                     shift: [0, 0]
                 };
-                el.addEventListener('touchstart', onMouseDown, {passive: true});
-                el.addEventListener('touchmove', touchmove, {passive: true});
+                el.addEventListener('touchstart', onMouseDown, listenerOpts);
+                el.addEventListener('touchmove', touchmove, listenerOpts);
 
                 if(!isTouchScreenDevice()) {
                     el.addEventListener('mousedown', onMouseDown);
-                    el.addEventListener('mousemove', touchmove, {passive: true});
+                    el.addEventListener('mousemove', touchmove, listenerOpts);
                 }
             }
         },

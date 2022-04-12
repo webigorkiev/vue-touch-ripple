@@ -2,13 +2,16 @@
     <div class="wrapper">
         <div class="row">
             <div class="button" v-touch-ripple>Default</div>
-            <div class="button green" v-touch-ripple>Green</div>
-            <div class="button orange" v-touch-ripple>Orange</div>
-            <div class="button yellow" v-touch-ripple>Yellow</div>
-            <div class="button purple" v-touch-ripple>Purple</div>
+            <div class="button green" v-touch-ripple:tap>Green</div>
+            <div class="button orange" v-touch-ripple:tap>Orange</div>
+            <div class="button yellow" v-touch-ripple:tap>Yellow</div>
+            <div class="button purple" v-touch-ripple:tap.200>Purple 200ms</div>
         </div>
         <div class="row">
-            <div class="button large" v-touch-ripple.swipe>Swipe</div>
+            <div class="button large" v-touch-ripple:swipe.800>Swipe 800ms</div>
+        </div>
+        <div class="row">
+            <div class="button large" v-touch-ripple:swipe.once>Swipe once</div>
         </div>
     </div>
 

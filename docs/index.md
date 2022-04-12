@@ -2,7 +2,7 @@
 
 Ripple directive for vue 3
 
-### Documentation and Demo
+## Documentation and Demo
 
 [vue-touch-ripple docs](https://webigorkiev.github.io/vue-touch-ripple-docs/)
 
@@ -24,8 +24,8 @@ yarn add @vuemod/vue-touch-ripple
 
 ```vue
 <template>
-    <div v-touch-ripple>Test Button</div>
-    <div v-touch-ripple.swipe>Test Button</div>
+    <div v-touch-ripple:tap>Test Button</div>
+    <div v-touch-ripple:swipe.once>Test Button</div>
 </template>
 
 <script lang="ts">
@@ -42,18 +42,24 @@ yarn add @vuemod/vue-touch-ripple
 </script>
 ```
 
+### Effects
+
+* Currently, implemented 2 effects: **click** and **swipe**, see [demo](./#documentation-and-demo).
+  (Default - tap)
+* You can set animation duration as modifier, like: v-touch-ripple:swipe.once.**800** (in ms)
+
 ### Options
 
 The directive automatically adds styles to the header with the vue-touch-ripple-styles id, 
-which can be changed in the settings. You can also change the default duration of the effect. 
-Keep in mind that for the swipe mode it is 1.5 times larger.
+which can be changed in the settings. You can also change the default duration of the effect.
+Keep in mind that for the swipe mode you need more long interval.
 
 For use with custom options you need **defineTouchRipple**
 
 ```vue
 <template>
-    <div v-touch-ripple>Test Button</div>
-    <div v-touch-ripple.swipe>Test Button</div>
+    <div v-touch-ripple:tap>Test Button</div>
+    <div v-touch-ripple:swipe>Test Button</div>
 </template>
 
 <script lang="ts">
