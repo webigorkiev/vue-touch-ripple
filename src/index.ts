@@ -40,7 +40,9 @@ export const defineTouchRipple = (options?:RippleOptions) => {
                 50% {opacity: 0;transform: scale(2.5); 
                 100% {opacity: 1;transform: scale(0);}}
             }
-            .v-touch-ripple {overflow: hidden;position: relative;}
+            .v-touch-ripple {
+                overflow: hidden;position: relative;user-select: none;-webkit-tap-highlight-color: transparent;
+            }
             .v-touch-ripple-paint {display: block;position: absolute;background: rgba(255, 255, 255, 0.5);
             border-radius: 100%;transform: scale(0);pointer-events: none;}
             .v-touch-ripple-paint-extension {animation: touch-ripple-extension ${opts.duration}s linear;}
