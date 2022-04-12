@@ -1,3 +1,7 @@
+## [1.0.4](https://github.com/webigorkiev/vuetouch/tree/v1.0.4) (2022-04-11)
+
+* Fix scroll issue
+
 ## [1.0.3](https://github.com/webigorkiev/vuetouch/tree/v1.0.3) (2022-04-11)
 
 * Fix chrome issue

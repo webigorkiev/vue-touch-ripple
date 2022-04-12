@@ -82,7 +82,7 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         const diameter = Math.max(box.height,box.width);
         paint.style.height = `${diameter}px`;
         paint.style.width = `${diameter}px`;
-        const shift = [box.left + scrollX, box.top + scrollY];
+        const shift = [box.left, box.top];
         el._vueTouchRipple!.diameter = diameter;
         el._vueTouchRipple!.shift = shift;
 
