@@ -74,3 +74,5 @@ For use with custom options you need **defineTouchRipple**
 * v-touch-ripple-paint - Ripple element
 * v-touch-ripple-paint-extension - Ripple element during animating default
 * v-touch-ripple-paint-swipe - Ripple element during animating in swipe mode
+
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
