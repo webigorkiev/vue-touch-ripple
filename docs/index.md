@@ -24,7 +24,7 @@ yarn add @vuemod/vue-touch-ripple
 
 ```vue
 <template>
-    <div v-touch-ripple:tap>Test Button</div>
+    <div v-touch-ripple:tap="isFireEffect">Test Button</div>
     <div v-touch-ripple:swipe.once>Test Button</div>
 </template>
 
@@ -36,6 +36,11 @@ yarn add @vuemod/vue-touch-ripple
         name: "App",
         directives: {
             touchRipple
+        },
+        data() {
+          return {
+            isFireEffect: true
+          }
         }
     });
 
@@ -47,6 +52,7 @@ yarn add @vuemod/vue-touch-ripple
 * Currently, implemented 2 effects: **click** and **swipe**, see [demo](./#documentation-and-demo).
   (Default - tap)
 * You can set animation duration as modifier, like: v-touch-ripple:swipe.once.**800** (in ms)
+* Your can switch on or off effect by param v-touch-ripple:tap="isFireEffect"
 
 ### Options
 

@@ -1,3 +1,8 @@
+## [1.1.2](https://github.com/webigorkiev/vuetouch/tree/v1.1.2) (2022-04-13)
+
+* Added param for on or off effect
+* Upgraded docs
+
 ## [1.1.1](https://github.com/webigorkiev/vuetouch/tree/v1.1.1) (2022-04-13)
 
 * Added support for **passive**, **once**, **capture** modifiers

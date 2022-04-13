@@ -8,7 +8,8 @@ interface HTMLElementTouch extends HTMLElement {
     _vueTouchRipple?: {
         effect: string,
         diameter: number,
-        shift: number[]
+        shift: number[],
+        value: (() => boolean)|boolean|undefined
     }
 }
 const defaultListenerOptions: AddEventListenerOptions = {
@@ -22,6 +23,19 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         duration: "400"
     }, options || {});
     const isTouchScreenDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints;
+    const bindingValue = (value?: (() => boolean)|boolean|{value:boolean}): boolean => {
+      if(typeof value === "undefined") {
+          return true;
+      }
+      if(typeof value === "function") {
+          return !!value();
+      }
+
+      // @ts-ignore
+      const ref = value.value || value;
+
+      return !!ref;
+    };
     const getCoords = (event: Event) => event.type.indexOf('mouse') !== -1
         ? [(event as MouseEvent).clientX, (event as MouseEvent).clientY]
         : [(event as TouchEvent).touches[0].clientX, (event as TouchEvent).touches[0].clientY];
@@ -43,8 +57,7 @@ export const defineTouchRipple = (options?:RippleOptions) => {
     const onMouseDown = (event: Event) => {
         const el = event.currentTarget as HTMLElementTouch;
         const paint = getPaint(el);
-
-        if(!paint) {
+        if(!paint || !bindingValue(el._vueTouchRipple?.value)) {
             return;
         }
         paint.classList.remove(el._vueTouchRipple!.effect);
@@ -140,7 +153,8 @@ export const defineTouchRipple = (options?:RippleOptions) => {
                         ? "v-touch-ripple-paint-swipe"
                         : "v-touch-ripple-paint-extension",
                     diameter: 0,
-                    shift: [0, 0]
+                    shift: [0, 0],
+                    value: binding.value
                 };
                 el.addEventListener('touchstart', onMouseDown, listenerOpts);
                 el.addEventListener('touchmove', touchmove, listenerOpts);
@@ -161,6 +175,9 @@ export const defineTouchRipple = (options?:RippleOptions) => {
                 el.removeEventListener('mousedown', onMouseDown);
                 el.removeEventListener('mousemove', touchmove);
             }
+        },
+        updated(el: HTMLElementTouch, binding) {
+            el._vueTouchRipple!.value = binding.value;
         }
     } as Directive;
 };
