@@ -1,7 +1,6 @@
 import type {Directive} from "vue";
 
 export interface RippleOptions {
-    styleId?: string
     duration?: number
 }
 interface HTMLElementTouch extends HTMLElement {
@@ -17,9 +16,9 @@ const defaultListenerOptions: AddEventListenerOptions = {
     passive: false,
     capture: false
 };
+const styleId = '__vue-touch-ripple-styles';
 export const defineTouchRipple = (options?:RippleOptions) => {
     const opts: Required<RippleOptions> = Object.assign({
-        styleId: "vue-touch-ripple-styles",
         duration: "400"
     }, options || {});
     const isTouchScreenDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints;
@@ -45,11 +44,7 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         el.classList.remove("v-touch-ripple-paint-swipe");
     };
     const isSheet = () => {
-        return !!document.getElementById(opts.styleId);
-    };
-    const removeSheet = () => {
-        const sheet = document.getElementById(opts.styleId);
-        sheet && document.head.removeChild(sheet);
+        return !!document.getElementById(styleId);
     };
     const getPaint = (el: HTMLElementTouch) => {
         return el.getElementsByClassName("v-touch-ripple-paint").item(0) as HTMLElementTouch || null;
@@ -90,12 +85,12 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         paint.style.left = `${coords[0] - shift[0] - diameter/2}px`;
         paint.style.top = `${coords[1] - shift[1] - diameter/2}px`;
     };
-    const createSheet = (duration: number) => {
+    const createSheet = () => {
         if(isSheet()) {
             return;
         }
         const sheet = document.createElement("style");
-        sheet.id = opts.styleId;
+        sheet.id = styleId;
         sheet.innerHTML = `
             @keyframes touch-ripple-extension {100% {opacity: 0;transform: scale(2.5);}}
             @keyframes touch-ripple-swipe {
@@ -114,8 +109,8 @@ export const defineTouchRipple = (options?:RippleOptions) => {
             }
             .v-touch-ripple-paint {display: block;position: absolute;background: rgba(255, 255, 255, 0.5);
             border-radius: 100%;transform: scale(0);pointer-events: none;}
-            .v-touch-ripple-paint-extension {animation: touch-ripple-extension ${duration}ms linear;}
-            .v-touch-ripple-paint-swipe {animation: touch-ripple-swipe ${duration}ms linear;}
+            .v-touch-ripple-paint-extension {animation-name: touch-ripple-extension;animation-timing-function: linear;}
+            .v-touch-ripple-paint-swipe {animation-name: touch-ripple-swipe;animation-timing-function: linear;}
         `;
         document.head.prepend(sheet);
     };
@@ -141,7 +136,7 @@ export const defineTouchRipple = (options?:RippleOptions) => {
             const modifiers = binding.modifiers;
             const duration = opts.duration;
             const modifierDuration = Object.keys(modifiers).find((key) => /^\d+$/.test(key));
-            createSheet(duration);
+            createSheet();
             mounted(el, modifierDuration ? parseInt(modifierDuration) : duration);
             if(isFirstDirective) {
                 listenerOpts.capture = modifiers.capture || false;
@@ -166,7 +161,6 @@ export const defineTouchRipple = (options?:RippleOptions) => {
             }
         },
         unmounted(el: HTMLElementTouch) {
-            removeSheet();
             unmounted(el);
             el.removeEventListener('touchstart', onMouseDown);
             el.removeEventListener('touchmove', touchmove);
