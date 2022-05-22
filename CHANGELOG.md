@@ -1,3 +1,7 @@
+## [1.1.3](https://github.com/webigorkiev/vuetouch/tree/v1.1.3) (2022-05-22)
+
+* Fixed a bug related to the need to hide the element. [Thanks 021-projects](https://github.com/webigorkiev/vue-touch-ripple/issues/1)
+
 ## [1.1.2](https://github.com/webigorkiev/vuetouch/tree/v1.1.2) (2022-04-13)
 
 * Added param for on or off effect

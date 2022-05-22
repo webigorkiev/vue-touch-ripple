@@ -22,6 +22,8 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         styleId: "vue-touch-ripple-styles",
         duration: "400"
     }, options || {});
+    const els = new Map<string, Set<HTMLElementTouch>>();
+    els.set(opts.styleId, new Set());
     const isTouchScreenDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints;
     const bindingValue = (value?: (() => boolean)|boolean|{value:boolean}): boolean => {
       if(typeof value === "undefined") {
@@ -48,8 +50,10 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         return !!document.getElementById(opts.styleId);
     };
     const removeSheet = () => {
-        const sheet = document.getElementById(opts.styleId);
-        sheet && document.head.removeChild(sheet);
+        if(els.get(opts.styleId)!.size === 0) {
+            const sheet = document.getElementById(opts.styleId);
+            sheet && document.head.removeChild(sheet);
+        }
     };
     const getPaint = (el: HTMLElementTouch) => {
         return el.getElementsByClassName("v-touch-ripple-paint").item(0) as HTMLElementTouch || null;
@@ -126,8 +130,10 @@ export const defineTouchRipple = (options?:RippleOptions) => {
         duration && (paint.style.animationDuration = `${duration}ms`);
         el.appendChild(paint);
         paint.addEventListener('animationend', onAnimationEnd);
+        els.get(opts.styleId)!.add(el);
     };
     const unmounted = (el: HTMLElementTouch) => {
+        els.get(opts.styleId)!.delete(el);
         el.classList.remove("v-touch-ripple");
         const paint = getPaint(el);
         paint && paint.removeEventListener('animationend', onAnimationEnd);
@@ -166,8 +172,8 @@ export const defineTouchRipple = (options?:RippleOptions) => {
             }
         },
         unmounted(el: HTMLElementTouch) {
-            removeSheet();
             unmounted(el);
+            removeSheet();
             el.removeEventListener('touchstart', onMouseDown);
             el.removeEventListener('touchmove', touchmove);
 
